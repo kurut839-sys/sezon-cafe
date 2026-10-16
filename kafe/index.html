@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SEZON — Меню</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="header">
+    <div class="logo">
+      <span>SEZON</span>
+      <small>ЧАЙХАНА</small>
+    </div>
+
+    <nav>
+      <a href="#home">Главная</a>
+      <a href="#menu">Меню</a>
+      <a href="#about">О нас</a>
+      <a href="#contact">Контакты</a>
+    </nav>
+
+    <button class="cart-button" onclick="openCart()">
+      🛒 Корзина <span id="cartCount">0</span>
+    </button>
+  </header>
+
+  <section class="hero" id="home">
+    <div class="hero-content">
+      <span class="badge">🍽️ ВКУСНАЯ КУХНЯ</span>
+      <h1>Настоящий вкус <span>чайханы SEZON</span></h1>
+      <p>Домашние блюда, горячий чай, ароматный лагман и настоящая уютная атмосфера.</p>
+      <div class="hero-buttons">
+        <a href="#menu" class="main-btn">Смотреть меню</a>
+        <a href="tel:0227070029" class="phone-btn">📞 0227 07 00 29</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="menu-section" id="menu">
+    <div class="section-title">
+      <span>НАШЕ МЕНЮ</span>
+      <h2>Выберите любимое блюдо</h2>
+    </div>
+
+    <div class="filters">
+      <button class="filter active" onclick="filterMenu('all', this)">Все</button>
+      <button class="filter" onclick="filterMenu('first', this)">Первые блюда</button>
+      <button class="filter" onclick="filterMenu('main', this)">Основные</button>
+      <button class="filter" onclick="filterMenu('drink', this)">Напитки</button>
+    </div>
+
+    <div class="menu-grid" id="menuGrid">
+      <article class="food-card" data-category="first">
+        <img src="./img/mastava.png" alt="Мастава" />
+        <div class="food-info">
+          <span class="category">Первые блюда</span>
+          <h3>Мастава</h3>
+          <p>Ароматный домашний суп с рисом и овощами.</p>
+          <div class="food-bottom">
+            <strong>190 сом</strong>
+            <button onclick="addToCart('Мастава', 190)">+</button>
+          </div>
+        </div>
+      </article>
+
+      <article class="food-card" data-category="first">
+        <img src="./img/chuchvara.png" alt="Чучбара" />
+        <div class="food-info">
+          <span class="category">Первые блюда</span>
+          <h3>Чучбара</h3>
+          <p>Домашние пельмени в ароматном бульоне.</p>
+          <div class="food-bottom">
+            <strong>200 сом</strong>
+            <button onclick="addToCart('Чучбара', 200)">+</button>
+          </div>
+        </div>
+      </article>
+
+      <article class="food-card" data-category="main">
+        <img src="./img/plov.png" alt="Плов" />
+        <div class="food-info">
+          <span class="category">Основные</span>
+          <h3>Аш</h3>
+          <p>Домашний плов с мясом и зеленью.</p>
+          <div class="food-bottom">
+            <strong>220 сом</strong>
+            <button onclick="addToCart('Аш', 220)">+</button>
+          </div>
+        </div>
+      </article>
+
+      <article class="food-card" data-category="main">
+        <img src="./img/lagman.png" alt="Лагман" />
+        <div class="food-info">
+          <span class="category">Основные</span>
+          <h3>Лагман</h3>
+          <p>Домашний лагман с мясом и овощами.</p>
+          <div class="food-bottom">
+            <strong>260 сом</strong>
+            <button onclick="addToCart('Лагман', 260)">+</button>
+          </div>
+        </div>
+      </article>
+
+      <article class="food-card" data-category="drink">
+        <img src="./img/tea.png" alt="Чай" />
+        <div class="food-info">
+          <span class="category">Напитки</span>
+          <h3>Чай</h3>
+          <p>Ароматный зелёный или чёрный чай.</p>
+          <div class="food-bottom">
+            <strong>20 сом</strong>
+            <button onclick="addToCart('Чай', 20)">+</button>
+          </div>
+        </div>
+      </article>
+
+      <article class="food-card" data-category="drink">
+        <img src="./img/kompot.png" alt="Компот" />
+        <div class="food-info">
+          <span class="category">Напитки</span>
+          <h3>Компот</h3>
+          <p>Освежающий домашний компот.</p>
+          <div class="food-bottom">
+            <strong>30 сом</strong>
+            <button onclick="addToCart('Компот', 30)">+</button>
+          </div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section class="about" id="about">
+    <span>О ЧАЙХАНЕ</span>
+    <h2>Домашний вкус каждый день</h2>
+    <p>В SEZON мы готовим уютные блюда по-домашнему, чтобы каждый мог отдохнуть и вкусно поесть в кругу семьи.</p>
+  </section>
+
+  <section class="contact" id="contact">
+    <div>
+      <span>ДОСТАВКА И ЗАКАЗ</span>
+      <h2>Хотите заказать?</h2>
+      <p>Позвоните нам и оформите заказ прямо сейчас.</p>
+    </div>
+    <a href="tel:0227070029" class="call-button">📞 0227 07 00 29</a>
+  </section>
+
+  <footer>
+    <div class="footer-logo">SEZON</div>
+    <p>📷 @CHAYHANA.SEZON</p>
+    <p>📞 0227 07 00 29</p>
+    <small>© 2026 Чайхана SEZON</small>
+  </footer>
+
+  <div class="cart-overlay" id="cartOverlay" onclick="closeCart()"></div>
+
+  <aside class="cart" id="cart">
+    <button class="close-cart" onclick="closeCart()">✕</button>
+    <h2>🛒 Ваша корзина</h2>
+    <div id="cartItems">
+      <p class="empty">Корзина пока пустая</p>
+    </div>
+
+    <div class="cart-total">
+      <span>Итого:</span>
+      <strong id="cartTotal">0 сом</strong>
+    </div>
+
+    <button class="order-button" onclick="order()">Оформить заказ</button>
+  </aside>
+
+  <script src="script.js"></script>
+</body>
+</html>

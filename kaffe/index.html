@@ -1,0 +1,579 @@
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Кафе «Сезон» — Традиции и современный вкус</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,400&display=swap" rel="stylesheet">
+
+  <style>
+    .nav-btn {
+      position: relative;
+      padding: 0.5rem 0;
+      cursor: pointer;
+    }
+
+    .nav-btn.active-nav {
+      color: #D4AF37;
+      font-weight: 700;
+    }
+
+    .nav-btn.active-nav::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background-color: #D4AF37;
+      border-radius: 2px;
+    }
+
+    .cat-btn {
+      background-color: #FFFFFF;
+      color: #4B5563;
+      border: 1px solid #E5E7EB;
+      cursor: pointer;
+    }
+
+    .cat-btn.active-cat {
+      background-color: #0D3B2E;
+      color: #D4AF37;
+      border-color: #0D3B2E;
+      font-weight: 600;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    }
+
+    .card-appear {
+      animation: fadeIn 0.3s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(6px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  </style>
+</head>
+
+<body class="bg-[#F8F6F0] text-gray-800 antialiased font-sans pb-20 md:pb-0">
+
+  <header class="sticky top-0 z-40 bg-[#0D3B2E]/95 backdrop-blur-md text-white border-b border-[#D4AF37]/30 shadow-lg">
+    <div class="max-w-7xl mx-auto px-4 h-20 flex items-center justify-between">
+
+      <a href="javascript:void(0)" onclick="showSection('home')" class="flex items-center gap-3 group">
+        <div class="w-11 h-11 rounded-full bg-[#D4AF37] flex items-center justify-center text-[#0D3B2E] text-xl font-bold font-serif shadow-md border-2 border-[#F8F6F0]">
+          С
+        </div>
+
+        <div>
+          <span class="font-serif text-2xl font-bold tracking-wider text-[#F8F6F0] block leading-none">СЕЗОН</span>
+          <span class="text-[10px] text-[#D4AF37] tracking-widest uppercase">Этно-кафе & Вкус</span>
+        </div>
+      </a>
+
+      <nav class="hidden md:flex items-center gap-8 font-medium text-sm tracking-wide">
+        <button onclick="showSection('home')" class="nav-btn hover:text-[#D4AF37] transition active-nav" id="nav-home">Главная</button>
+        <button onclick="showSection('menu')" class="nav-btn hover:text-[#D4AF37] transition" id="nav-menu">Меню (20)</button>
+        <button onclick="showSection('about')" class="nav-btn hover:text-[#D4AF37] transition" id="nav-about">О кафе</button>
+
+        <button onclick="showSection('favorites')" class="nav-btn hover:text-[#D4AF37] transition flex items-center gap-1.5" id="nav-favorites">
+          <i class="fa-solid fa-heart text-red-400"></i>
+          Избранное
+          <span id="fav-count-badge" class="bg-red-500 text-white text-[10px] px-1.5 py-0.5 rounded-full hidden">0</span>
+        </button>
+
+        <button onclick="showSection('history')" class="nav-btn hover:text-[#D4AF37] transition" id="nav-history">История заказов</button>
+      </nav>
+
+      <button onclick="toggleCartModal()" class="relative bg-[#D4AF37] hover:bg-[#b8972e] text-[#0D3B2E] px-4 py-2 rounded-xl font-semibold text-sm transition flex items-center gap-2 shadow-md cursor-pointer">
+        <i class="fa-solid fa-cart-shopping"></i>
+        <span class="hidden sm:inline">Корзина</span>
+        <span id="cart-badge" class="bg-[#0D3B2E] text-[#D4AF37] text-xs w-5 h-5 rounded-full flex items-center justify-center font-bold">0</span>
+      </button>
+
+    </div>
+  </header>
+
+  <div class="md:hidden fixed bottom-0 left-0 right-0 bg-[#0D3B2E] border-t border-[#D4AF37]/30 z-40 px-3 py-2 flex justify-around text-white text-xs">
+    <button onclick="showSection('home')" class="flex flex-col items-center gap-1 text-gray-300 hover:text-[#D4AF37]">
+      <i class="fa-solid fa-house text-lg"></i><span>Главная</span>
+    </button>
+
+    <button onclick="showSection('menu')" class="flex flex-col items-center gap-1 text-gray-300 hover:text-[#D4AF37]">
+      <i class="fa-solid fa-utensils text-lg"></i><span>Меню</span>
+    </button>
+
+    <button onclick="showSection('favorites')" class="flex flex-col items-center gap-1 text-gray-300 hover:text-[#D4AF37]">
+      <i class="fa-solid fa-heart text-lg text-red-400"></i><span>Избранное</span>
+    </button>
+
+    <button onclick="showSection('history')" class="flex flex-col items-center gap-1 text-gray-300 hover:text-[#D4AF37]">
+      <i class="fa-solid fa-clock-rotate-left text-lg"></i><span>История</span>
+    </button>
+  </div>
+
+  <main class="max-w-7xl mx-auto px-4 py-8">
+
+    <section id="sec-home" class="space-y-12">
+      <div class="relative rounded-3xl overflow-hidden bg-gradient-to-r from-[#0D3B2E] to-[#165241] text-white p-8 md:p-16 border border-[#D4AF37]/30 shadow-2xl">
+        <div class="relative z-10 max-w-2xl space-y-6">
+
+          <span class="inline-block bg-[#D4AF37]/20 border border-[#D4AF37] text-[#D4AF37] text-xs px-3 py-1 rounded-full uppercase tracking-widest font-semibold">
+            Вкус каждого времени года
+          </span>
+
+          <h1 class="font-serif text-4xl md:text-6xl font-bold leading-tight">
+            Добро пожаловать в этно-кафе <span class="text-[#D4AF37]">«Сезон»</span>
+          </h1>
+
+          <p class="text-gray-300 text-base md:text-lg">
+            Современный уют с душой кыргызского гостеприимства. Избранные блюда национальной и восточной кухни.
+          </p>
+
+          <div class="flex flex-wrap gap-4 pt-2">
+            <button onclick="showSection('menu')" class="bg-[#D4AF37] hover:bg-[#b8972e] text-[#0D3B2E] font-bold px-7 py-3.5 rounded-xl shadow-lg transition cursor-pointer">
+              Открыть меню
+            </button>
+
+            <button onclick="showSection('about')" class="border border-[#D4AF37] text-[#D4AF37] hover:bg-[#D4AF37]/10 font-medium px-7 py-3.5 rounded-xl transition cursor-pointer">
+              Узнать о нас
+            </button>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="space-y-6">
+        <div class="flex items-center justify-between border-b border-gray-200 pb-4">
+          <div>
+            <h2 class="font-serif text-2xl md:text-3xl font-bold text-[#0D3B2E]">Ваши любимые блюда</h2>
+            <p class="text-gray-500 text-sm">Быстрый доступ к блюдам, которые вы отметили сердечком</p>
+          </div>
+
+          <button onclick="showSection('menu')" class="text-xs md:text-sm font-semibold text-[#C85A32] hover:underline flex items-center gap-1 cursor-pointer">
+            Все блюда <i class="fa-solid fa-arrow-right"></i>
+          </button>
+        </div>
+
+        <div id="home-favorites-list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"></div>
+      </div>
+    </section>
+
+    <section id="sec-menu" class="hidden space-y-8">
+      <div class="text-center max-w-2xl mx-auto space-y-3">
+        <h2 class="font-serif text-3xl md:text-4xl font-bold text-[#0D3B2E]">Наше меню</h2>
+        <p class="text-gray-600 text-sm">20 фирменных блюд и напитков.</p>
+      </div>
+
+      <div class="flex flex-wrap justify-center gap-2 md:gap-3" id="category-filters">
+        <button onclick="filterCategory('all')" class="cat-btn active-cat px-5 py-2 rounded-xl text-sm font-medium transition" data-cat="all">Все (20)</button>
+        <button onclick="filterCategory('national')" class="cat-btn px-5 py-2 rounded-xl text-sm font-medium transition" data-cat="national">Национальная кухня</button>
+        <button onclick="filterCategory('mains')" class="cat-btn px-5 py-2 rounded-xl text-sm font-medium transition" data-cat="mains">Горячие блюда</button>
+        <button onclick="filterCategory('snacks')" class="cat-btn px-5 py-2 rounded-xl text-sm font-medium transition" data-cat="snacks">Закуски и супы</button>
+        <button onclick="filterCategory('drinks')" class="cat-btn px-5 py-2 rounded-xl text-sm font-medium transition" data-cat="drinks">Напитки</button>
+        <button onclick="filterCategory('desserts')" class="cat-btn px-5 py-2 rounded-xl text-sm font-medium transition" data-cat="desserts">Десерты</button>
+      </div>
+
+      <div id="menu-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"></div>
+    </section>
+
+    <section id="sec-favorites" class="hidden space-y-6">
+      <div class="border-b border-gray-200 pb-4">
+        <h2 class="font-serif text-3xl font-bold text-[#0D3B2E]">Избранные блюда</h2>
+      </div>
+
+      <div id="favorites-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"></div>
+    </section>
+
+    <section id="sec-about" class="hidden space-y-12">
+      <div class="bg-white rounded-3xl p-8 md:p-12 shadow-sm border border-gray-100 grid md:grid-cols-2 gap-8 items-center">
+        <div class="space-y-6">
+          <span class="text-[#C85A32] text-xs font-bold uppercase tracking-widest">О заведении</span>
+
+          <h2 class="font-serif text-3xl md:text-4xl font-bold text-[#0D3B2E]">
+            Кафе «Сезон» — Тепло традиций
+          </h2>
+
+          <p class="text-gray-600 leading-relaxed text-sm md:text-base">
+            Сочетание богатой кыргызской кулинарной культуры и современного ресторанного сервиса.
+          </p>
+        </div>
+
+        <div class="rounded-2xl overflow-hidden shadow-md">
+          <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=800&q=80" alt="Интерьер кафе" class="w-full h-80 object-cover">
+        </div>
+      </div>
+    </section>
+
+    <section id="sec-history" class="hidden space-y-6">
+      <div class="flex justify-between items-center border-b border-gray-200 pb-4">
+        <h2 class="font-serif text-3xl font-bold text-[#0D3B2E]">История заказов</h2>
+
+        <button onclick="clearHistory()" class="text-xs text-red-500 hover:underline cursor-pointer">
+          Очистить историю
+        </button>
+      </div>
+
+      <div id="history-container" class="space-y-4"></div>
+    </section>
+
+  </main>
+
+  <div id="cart-modal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden flex justify-end">
+    <div class="bg-white w-full max-w-md h-full shadow-2xl flex flex-col justify-between p-6 overflow-y-auto">
+
+      <div>
+        <div class="flex items-center justify-between border-b pb-4 mb-4">
+          <h3 class="font-serif text-2xl font-bold text-[#0D3B2E]">Корзина</h3>
+          <button onclick="toggleCartModal()" class="text-gray-400 text-2xl">&times;</button>
+        </div>
+
+        <div id="cart-items" class="space-y-4"></div>
+      </div>
+
+      <div class="border-t pt-4 space-y-4 mt-6">
+        <div class="flex justify-between text-lg font-bold text-[#0D3B2E]">
+          <span>Итого:</span>
+          <span id="cart-total">0 KGS</span>
+        </div>
+
+        <button onclick="checkout()" class="w-full bg-[#0D3B2E] text-[#D4AF37] font-bold py-3.5 rounded-xl">
+          Оформить заказ
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    const MENU_DATA = [
+      { id: 1, name: 'Бешбармак по-нарынски', category: 'national', price: 420, image: 'https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=500&q=80', desc: 'Отварная конина и телятина с тонким лапшовым тестом.' },
+      { id: 2, name: 'Таш-Кордо из баранины', category: 'national', price: 650, image: 'https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=500&q=80', desc: 'Нежнейшее мясо барашка по рецепту кочевников.' },
+      { id: 3, name: 'Сочный Куурдак', category: 'national', price: 480, image: 'https://images.unsplash.com/photo-1603048588665-791ca8aea617?auto=format&fit=crop&w=500&q=80', desc: 'Жареная мякоть телятины с картофелем.' },
+      { id: 4, name: 'Манты сочные (5 шт)', category: 'national', price: 320, image: 'https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=500&q=80', desc: 'Паровые манты с говядиной.' },
+      { id: 5, name: 'Самсы тандырные (2 шт)', category: 'national', price: 180, image: 'https://images.unsplash.com/photo-1601050690597-df0568f70950?auto=format&fit=crop&w=500&q=80', desc: 'Слоеное тесто из тандыра с бараниной.' },
+      { id: 6, name: 'Уйгурский Лагман', category: 'mains', price: 350, image: 'https://images.unsplash.com/photo-1569718212165-3a8278d5f624?auto=format&fit=crop&w=500&q=80', desc: 'Тянутая вручную лапша с мясом и овощами.' },
+      { id: 7, name: 'Босо Лагман', category: 'mains', price: 370, image: 'https://images.unsplash.com/photo-1555126634-323283e090fa?auto=format&fit=crop&w=500&q=80', desc: 'Жареная лапша с говядиной и джусаем.' },
+      { id: 8, name: 'Плов праздничный', category: 'mains', price: 380, image: 'https://images.unsplash.com/photo-1633964913295-ceb43826e7c9?auto=format&fit=crop&w=500&q=80', desc: 'Рис девзира, баранина и жёлтая морковь.' },
+      { id: 9, name: 'Стейк Рибай', category: 'mains', price: 890, image: 'https://images.unsplash.com/photo-1558030006-450675393462?auto=format&fit=crop&w=500&q=80', desc: 'Мраморная говядина с овощами гриль.' },
+      { id: 10, name: 'Ашлян-Фу по-каракольски', category: 'snacks', price: 150, image: 'https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=500&q=80', desc: 'Острый холодный суп с лапшой и омлетом.' },
+      { id: 11, name: 'Шорпо из баранины', category: 'snacks', price: 290, image: 'https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=500&q=80', desc: 'Прозрачный бульон с ребрышком барашка.' },
+      { id: 12, name: 'Чучвара шорпосы', category: 'snacks', price: 260, image: 'https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=500&q=80', desc: 'Мини-пельмени в бульоне.' },
+      { id: 13, name: 'Ассорти из Казы', category: 'snacks', price: 520, image: 'https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=500&q=80', desc: 'Домашняя колбаса из конины.' },
+      { id: 14, name: 'Боорсоки с каймаком', category: 'snacks', price: 160, image: 'https://images.unsplash.com/photo-1589301760014-d929f3979dbc?auto=format&fit=crop&w=500&q=80', desc: 'Обжаренное тесто со сметаной.' },
+      { id: 15, name: 'Максым (0.5L)', category: 'drinks', price: 80, image: 'https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?auto=format&fit=crop&w=500&q=80', desc: 'Злаковый национальный напиток.' },
+      { id: 16, name: 'Чалап (0.5L)', category: 'drinks', price: 80, image: 'https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?auto=format&fit=crop&w=500&q=80', desc: 'Кисломолочный напиток.' },
+      { id: 17, name: 'Чай с облепихой', category: 'drinks', price: 180, image: 'https://images.unsplash.com/photo-1576092768241-dec231879fc3?auto=format&fit=crop&w=500&q=80', desc: 'Чай с горными травами.' },
+      { id: 18, name: 'Кофе Латте', category: 'drinks', price: 170, image: 'https://images.unsplash.com/photo-1534778101976-62847782c213?auto=format&fit=crop&w=500&q=80', desc: 'Кофе с молочной пенкой.' },
+      { id: 19, name: 'Пахлава с медом', category: 'desserts', price: 210, image: 'https://images.unsplash.com/photo-1519676867240-f03562e64548?auto=format&fit=crop&w=500&q=80', desc: 'Слоеное пирожное с орехами.' },
+      { id: 20, name: 'Чизкейк', category: 'desserts', price: 250, image: 'https://images.unsplash.com/photo-1533134242443-d4fd215305ad?auto=format&fit=crop&w=500&q=80', desc: 'Сливочный десерт с ягодами.' }
+    ];
+
+    let state = {
+      favorites: JSON.parse(localStorage.getItem('sezon_favs')) || [],
+      cart: JSON.parse(localStorage.getItem('sezon_cart')) || [],
+      history: JSON.parse(localStorage.getItem('sezon_hist')) || []
+    };
+
+    document.addEventListener('DOMContentLoaded', () => {
+      renderMenu('all');
+      updateFavoritesUI();
+      updateCartUI();
+      renderHistory();
+    });
+
+    function showSection(sectionId) {
+      const sections = ['home', 'menu', 'favorites', 'about', 'history'];
+
+      sections.forEach(sec => {
+        const el = document.getElementById(`sec-${sec}`);
+        if (el) el.classList.add('hidden');
+
+        const navBtn = document.getElementById(`nav-${sec}`);
+        if (navBtn) navBtn.classList.remove('active-nav');
+      });
+
+      const activeSec = document.getElementById(`sec-${sectionId}`);
+      if (activeSec) activeSec.classList.remove('hidden');
+
+      const activeNav = document.getElementById(`nav-${sectionId}`);
+      if (activeNav) activeNav.classList.add('active-nav');
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function filterCategory(cat) {
+      document.querySelectorAll('.cat-btn').forEach(btn => {
+        btn.classList.remove('active-cat');
+        if (btn.dataset.cat === cat) btn.classList.add('active-cat');
+      });
+
+      renderMenu(cat);
+    }
+
+    function renderMenu(category = 'all') {
+      const container = document.getElementById('menu-grid');
+      if (!container) return;
+
+      const filtered = category === 'all'
+        ? MENU_DATA
+        : MENU_DATA.filter(item => item.category === category);
+
+      container.innerHTML = filtered.map(item => createCardHTML(item)).join('');
+    }
+
+    function createCardHTML(item) {
+      const isFav = state.favorites.includes(item.id);
+
+      return `
+        <div class="bg-white rounded-2xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-xl transition flex flex-col justify-between card-appear">
+          <div class="relative overflow-hidden h-48">
+            <img src="${item.image}" alt="${item.name}" class="w-full h-full object-cover">
+
+            <button onclick="toggleFavorite(${item.id})" class="absolute top-3 right-3 w-9 h-9 rounded-full bg-white/90 flex items-center justify-center shadow-md text-gray-400 hover:text-red-500 cursor-pointer">
+              <i class="fa-${isFav ? 'solid text-red-500' : 'regular'} fa-heart"></i>
+            </button>
+          </div>
+
+          <div class="p-5 flex-1 flex flex-col justify-between space-y-4">
+            <div>
+              <h3 class="font-bold text-gray-800 text-lg">${item.name}</h3>
+              <p class="text-xs text-gray-500 mt-1">${item.desc}</p>
+            </div>
+
+            <div class="flex items-center justify-between pt-2 border-t border-gray-50">
+              <span class="font-bold text-[#0D3B2E] text-lg">${item.price} KGS</span>
+
+              <button onclick="addToCart(${item.id})" class="bg-[#0D3B2E] text-[#D4AF37] px-3.5 py-2 rounded-xl text-xs font-semibold cursor-pointer">
+                + В корзину
+              </button>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function toggleFavorite(id) {
+      if (state.favorites.includes(id)) {
+        state.favorites = state.favorites.filter(favId => favId !== id);
+      } else {
+        state.favorites.push(id);
+      }
+
+      localStorage.setItem('sezon_favs', JSON.stringify(state.favorites));
+
+      const activeCat = document.querySelector('.cat-btn.active-cat')?.dataset.cat || 'all';
+
+      renderMenu(activeCat);
+      updateFavoritesUI();
+    }
+
+    function updateFavoritesUI() {
+      const badge = document.getElementById('fav-count-badge');
+
+      if (badge) {
+        badge.innerText = state.favorites.length;
+        badge.classList.toggle('hidden', state.favorites.length === 0);
+      }
+
+      const favGrid = document.getElementById('favorites-grid');
+      const homeFavGrid = document.getElementById('home-favorites-list');
+
+      const favItems = MENU_DATA.filter(item => state.favorites.includes(item.id));
+
+      const content = favItems.length > 0
+        ? favItems.map(item => createCardHTML(item)).join('')
+        : `<div class="col-span-full text-center py-12 text-gray-400">В избранном пока ничего нет.</div>`;
+
+      if (favGrid) favGrid.innerHTML = content;
+      if (homeFavGrid) homeFavGrid.innerHTML = content;
+    }
+
+    function addToCart(id) {
+      const existing = state.cart.find(item => item.id === id);
+
+      if (existing) {
+        existing.qty += 1;
+      } else {
+        state.cart.push({ id, qty: 1 });
+      }
+
+      saveCart();
+    }
+
+    function updateCartQty(id, delta) {
+      const item = state.cart.find(i => i.id === id);
+
+      if (item) {
+        item.qty += delta;
+
+        if (item.qty <= 0) {
+          state.cart = state.cart.filter(i => i.id !== id);
+        }
+      }
+
+      saveCart();
+    }
+
+    function saveCart() {
+      localStorage.setItem('sezon_cart', JSON.stringify(state.cart));
+      updateCartUI();
+    }
+
+    function updateCartUI() {
+      const badge = document.getElementById('cart-badge');
+      const totalCount = state.cart.reduce((sum, item) => sum + item.qty, 0);
+
+      if (badge) badge.innerText = totalCount;
+
+      const container = document.getElementById('cart-items');
+      const totalEl = document.getElementById('cart-total');
+
+      let totalSum = 0;
+
+      if (container) {
+        if (state.cart.length === 0) {
+          container.innerHTML = `<div class="text-center py-12 text-gray-400">Корзина пуста</div>`;
+        } else {
+          container.innerHTML = state.cart.map(cartItem => {
+            const product = MENU_DATA.find(p => p.id === cartItem.id);
+
+            totalSum += product.price * cartItem.qty;
+
+            return `
+              <div class="flex items-center justify-between bg-gray-50 p-3 rounded-xl">
+                <div>
+                  <h4 class="font-bold text-sm">${product.name}</h4>
+                  <p class="text-xs text-gray-500">${product.price} KGS</p>
+                </div>
+
+                <div class="flex items-center gap-2">
+                  <button onclick="updateCartQty(${cartItem.id}, -1)" class="w-7 h-7 bg-white border font-bold rounded">-</button>
+                  <span class="text-sm font-bold">${cartItem.qty}</span>
+                  <button onclick="updateCartQty(${cartItem.id}, 1)" class="w-7 h-7 bg-white border font-bold rounded">+</button>
+                </div>
+              </div>
+            `;
+          }).join('');
+        }
+      }
+
+      if (totalEl) totalEl.innerText = `${totalSum} KGS`;
+    }
+
+    function toggleCartModal() {
+      document.getElementById('cart-modal').classList.toggle('hidden');
+    }
+
+    function checkout() {
+      if (state.cart.length === 0) {
+        alert('Корзина пуста!');
+        return;
+      }
+
+      const orderItems = state.cart.map(ci => {
+        const product = MENU_DATA.find(item => item.id === ci.id);
+
+        return {
+          name: product.name,
+          qty: ci.qty,
+          price: product.price
+        };
+      });
+
+      const totalSum = orderItems.reduce(
+        (sum, item) => sum + item.price * item.qty,
+        0
+      );
+
+      const now = new Date();
+
+      const newOrder = {
+        id: 'SZ-' + Math.floor(1000 + Math.random() * 9000),
+        date: now.toLocaleDateString('ru-RU') + ' ' +
+          now.toLocaleTimeString('ru-RU', {
+            hour: '2-digit',
+            minute: '2-digit'
+          }),
+        items: orderItems,
+        total: totalSum
+      };
+
+      let message = '🍽 Новый заказ в этно-кафе «Сезон»!\n';
+      message += `Заказ: ${newOrder.id}\n`;
+      message += `Время: ${newOrder.date}\n\n`;
+      message += 'Состав заказа:\n';
+
+      orderItems.forEach((item, index) => {
+        message += `${index + 1}. ${item.name} × ${item.qty} — ${item.price * item.qty} KGS\n`;
+      });
+
+      message += `\nИтого: ${totalSum} KGS\n`;
+      message += 'Пожалуйста, подтвердите заказ.';
+
+      const phoneWhatsApp = '996227070029';
+
+      const whatsappURL =
+        `https://wa.me/${phoneWhatsApp}?text=${encodeURIComponent(message)}`;
+
+      window.open(whatsappURL, '_blank');
+
+      state.history.unshift(newOrder);
+      localStorage.setItem('sezon_hist', JSON.stringify(state.history));
+
+      state.cart = [];
+      saveCart();
+
+      const cartModal = document.getElementById('cart-modal');
+      if (cartModal) cartModal.classList.add('hidden');
+
+      renderHistory();
+      showSection('history');
+    }
+
+    function renderHistory() {
+      const container = document.getElementById('history-container');
+      if (!container) return;
+
+      if (state.history.length === 0) {
+        container.innerHTML = `<div class="bg-white p-8 rounded-2xl text-center text-gray-400">История пуста</div>`;
+        return;
+      }
+
+      container.innerHTML = state.history.map(order => `
+        <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm space-y-2">
+          <div class="flex justify-between font-bold border-b pb-2">
+            <span>Заказ ${order.id}</span>
+            <span class="text-xs text-gray-400">${order.date}</span>
+          </div>
+
+          <div class="text-sm text-gray-600">
+            ${order.items.map(i => `<div>${i.name} × ${i.qty} — ${i.price * i.qty} KGS</div>`).join('')}
+          </div>
+
+          <div class="font-bold text-[#0D3B2E] pt-2 border-t">
+            Итого: ${order.total} KGS
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function clearHistory() {
+      state.history = [];
+      localStorage.removeItem('sezon_hist');
+      renderHistory();
+    }
+  </script>
+
+</body>
+</html>
